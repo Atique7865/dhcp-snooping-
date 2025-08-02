@@ -1,0 +1,43 @@
+Here's the corrected **DHCP Snooping configuration without Option 82** (as requested with `no ip dhcp snooping information option`):  
+
+### **Basic DHCP Snooping Configuration (Without Option 82)**
+```bash
+enable
+configure terminal
+
+! Enable DHCP Snooping globally
+ip dhcp snooping
+
+! Disable Option 82 (DHCP Relay Information)
+no ip dhcp snooping information option
+
+! Enable DHCP Snooping for specific VLANs
+ip dhcp snooping vlan 10,20,30
+
+! Mark trusted ports (DHCP server or uplink ports)
+interface GigabitEthernet1/0/24
+ ip dhcp snooping trust
+exit
+
+! (Optional) Limit DHCP packets per second on untrusted ports
+ip dhcp snooping limit rate 100
+
+end
+write memory
+```
+
+### **Verification Commands**
+```bash
+show ip dhcp snooping             # Check global status
+show ip dhcp snooping binding     # View DHCP bindings
+show ip dhcp snooping statistics  # Monitor packet counters
+```
+
+### **Key Notes:**
+✅ **Option 82 is disabled** (as per your request).  
+✅ **Trusted ports** must include:  
+   - Legitimate DHCP servers  
+   - Inter-switch trunk links (if applicable).  
+✅ **Untrusted ports** (end-user ports) will block rogue DHCP servers automatically.  
+
+Let me know if you need adjustments! 🚀
